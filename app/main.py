@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from db.DbContext import DbContext
+from app.db.DbContext import DbContext
 
 
 class ImportItem(BaseModel):
@@ -53,7 +53,14 @@ async def import_data(data: ImportItem):
     if is_valid_request:
         for item in data.items:
             if dbContext.contains_item_in_folders(item['id']) or dbContext.contains_item_in_files(item['id']):
-                pass
+                dbContext.update_data(
+                    id=item["id"],
+                    url=item["url"] if "url" in item else None,
+                    parent_id=item["parentId"],
+                    size=item["size"] if "size" in item else None,
+                    type=item["type"],
+                    date=data.updateDate
+                )
             else:
                 dbContext.insert_data(
                     id=item["id"],

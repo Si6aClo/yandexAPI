@@ -1,5 +1,5 @@
 import psycopg2
-from db.settings import DBNAME, PASSWORD, USERNAME, HOST
+from app.db.settings import DBNAME, PASSWORD, USERNAME, HOST
 
 
 class DbContext:
